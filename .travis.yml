@@ -1,0 +1,29 @@
+sudo: required
+dist: bionic
+language: bash
+script:
+- source ./env.sh
+- wget ${GTOO_URL}
+- mkdir rootfs
+- sudo tar xf *.tar.xz -C rootfs
+- sudo cp -f wsl.conf rootfs/etc
+- sudo cp -f resolv.conf rootfs/etc
+- sudo cp -f make.conf rootfs/etc/portage
+- sudo chroot rootfs /bin/bash
+- set -e -x
+- emerge-webrsync
+- emerge --oneshot -a n sys-devel/gcc
+- emerge --oneshot --usepkg=n -a n sys-devel/libtool
+- emerge --verbose --update --deep --newuse -a n @world
+- exit
+- sudo umount --recursive rootfs
+- cd rootfs
+- sudo tar -zcpf ../install.tar.gz *
+- sudo chown `id -un` ../install.tar.gz
+deploy:
+  provider: releases
+  api_key:
+    secure: OFZUbZm18CHQ9ogwEwNRdSzEoMtmyXR/C1hYQaU4UoX6aeubOYE5Ofi6+ttwGKB200W7eoLNSGohbYwLsjWLmz6RDOEOWuHIZsfmQa/GeNwZYuNNZVBp2sLYEd6ics6RjX9YBISi4RObeKK57tthYynzGZo2r2/RMxj8ok91iS8zTB0s6LkKT2i224Od3mVwLHxLDRqsFYxftEeabLFnzR5CwfsIyQk41JORc+l3So4lJKuavkkmHl0hN6hZvkll5cMfqRh1/4ZjkF4g0hL8rQOEnmWChRJjBPqEvI0z8tmQtSqpBFpXiYZZCSEqJ7EJvTDB+lLKFFVzxYTdOg41T7FCfMPxe3RfETkx0tnNpPo/t4+J53xJ+aRKhZaaxbPUAX1DQ4uyTwlYv/zWhOjbqaaCBi87hsVFxOYdcFKn/87IwPpRdA5QyytUzq3gF8ZOJ1cWHXfgYsbOW/3pF+j6JVz8SQCv32vkAAa2ADi+a9aSdg5MDtEo6tYP1d7GruJV/eUoc+JQdc4an8NTo0j81lfT2errb48VQKUEULPkzrL/ziZAzKuuSBFYpj+FO/dNFzJBXhfe6bGxKnwqWuOcswNGZUT4bmwRMUusOgF/V52BTcAIHmswenJwO1Wp6KSEwqL3qlSk+Y05JH8jNz+6xMfAcEzzkWDAv0a2xZosj7k=
+  file: install.tar.gz
+  on:
+    repo: ThatWeirdAndrew/GentooWSL-FS
