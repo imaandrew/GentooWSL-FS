@@ -9,13 +9,15 @@ script:
 - sudo cp -f wsl.conf rootfs/etc
 - sudo cp -f resolv.conf rootfs/etc
 - sudo cp -f make.conf rootfs/etc/portage
-- sudo chroot rootfs set -e -x
-- sudo chroot rootfs emerge-webrsync
-- sudo chroot rootfs emerge --oneshot -a n sys-devel/gcc
-- sudo chroot rootfs emerge --oneshot --usepkg=n -a n sys-devel/libtool
-- sudo chroot rootfs emerge --verbose --update --deep --newuse -a n @world
-- sudo umount --recursive rootfs
 - cd rootfs
+- sudo mount -t proc proc proc/
+- sudo mount --bind /sys sys
+- sudo chroot . source /etc/profile
+- sudo chroot . emerge-webrsync
+- sudo chroot . emerge --oneshot -a n sys-devel/gcc
+- sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
+- sudo chroot . emerge --verbose --update --deep --newuse -a n @world
+- sudo umount ./{sys,proc}
 - sudo tar -zcpf ../install.tar.gz *
 - sudo chown `id -un` ../install.tar.gz
 deploy:
