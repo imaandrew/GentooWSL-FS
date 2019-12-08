@@ -1,8 +1,8 @@
- version: 2.1
+ version: 2
  jobs:
    build:
      docker:
-        - image: ubuntu:latest
+       - image: debian:testing
      steps:
         - checkout
         - run:
