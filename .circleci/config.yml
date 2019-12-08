@@ -1,8 +1,8 @@
  version: 2
  jobs:
    build:
-     docker:
-       - image: debian:testing
+     machine:
+       image: ubuntu-1604:201903-01
      steps:
         - checkout
         - run:
@@ -18,9 +18,9 @@
         - run:
             name: Extract and copy files
             command: |
-                sudo mkdir rootfs
+                mkdir rootfs
                 dir
-                sudo tar -xvf $TAR -C rootfs
+                tar -xvf $TAR -C rootfs
                 cp -f wsl.conf rootfs/etc
                 cp -f resolv.conf rootfs/etc
                 cp -f make.conf rootfs/etc/portage
