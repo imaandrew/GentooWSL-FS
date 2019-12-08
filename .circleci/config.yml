@@ -17,7 +17,7 @@
                 wget ${GTOO_URL}
         - run:
             name: Extract and copy files
-            command :
+            command: |
                 mkdir rootfs
                 sudo tar xf *.tar.xz -C rootfs
                 sudo cp -f wsl.conf rootfs/etc
