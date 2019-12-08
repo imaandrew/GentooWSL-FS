@@ -9,7 +9,7 @@
             name: Installed prerequisite packages
             command: |
                 apt update -q
-                apt install -y -q curl wget sudo
+                apt install -y -q curl wget
         - run:
             name: Setup environment and download files
             command: |
@@ -18,15 +18,16 @@
         - run:
             name: Extract and copy files
             command: |
-                mkdir rootfs
-                sudo tar xf $TAR -C rootfs
-                sudo cp -f wsl.conf rootfs/etc
-                sudo cp -f resolv.conf rootfs/etc
-                sudp cp -f make.conf rootfs/etc/portage
-                sudo cp -f cpu.sh rootfs
+                mkdir ~/rootfs
+                tar xf $TAR -C ~/rootfs
+                cp -f wsl.conf ~/rootfs/etc
+                cp -f resolv.conf ~/rootfs/etc
+                cp -f make.conf ~/rootfs/etc/portage
+                cp -f cpu.sh ~/rootfs
         - run:
             name: Mount directories and chroot
             command: |
+                cd ~/rootfs
                 mount -t proc proc proc/
                 mount --bind /sys sys
                 chroot . sh cpu.sh
