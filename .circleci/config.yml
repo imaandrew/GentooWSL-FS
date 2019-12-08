@@ -20,7 +20,7 @@
             command: |
                 mkdir rootfs
                 dir
-                tar xf $TAR -C rootfs
+                tar xvf $TAR -C rootfs
                 cp -f wsl.conf rootfs/etc
                 cp -f resolv.conf rootfs/etc
                 cp -f make.conf rootfs/etc/portage
