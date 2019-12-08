@@ -1,0 +1,40 @@
+ version: 2.1
+ jobs:
+   build:
+     docker:
+       image: ubuntu:latest
+     steps:
+        - checkout
+        - run:
+            name: Setup environment and download files
+            command: |
+                source ./env.sh
+                wget ${GTOO_URL}
+        - run:
+            name: Extract and copy files
+            command :
+                mkdir rootfs
+                sudo tar xf *.tar.xz -C rootfs
+                sudo cp -f wsl.conf rootfs/etc
+                sudo cp -f resolv.conf rootfs/etc
+                sudo cp -f make.conf rootfs/etc/portage
+                sudo cp -f cpu.sh rootfs
+        - run:
+            name: Mount directories and chroot
+            command: |
+                sudo mount -t proc proc proc/
+                sudo mount --bind /sys sys
+                sudo chroot . sh cpu.sh
+                sudo chroot . emerge-webrsync
+        - run:
+            name: Install packages
+            command: |
+                sudo chroot . emerge --oneshot -a n sys-devel/gcc
+                sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
+                sudo chroot . emerge --verbose --update --deep --newuse -a n @world
+        - run:
+            name: Unmount and compress archive
+            command: |
+                sudo umount ./{sys,proc}
+                sudo tar -zcpf ../install.tar.gz *
+                sudo chown `id -un` ../install.tar.gz
