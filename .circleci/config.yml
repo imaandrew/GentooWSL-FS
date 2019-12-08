@@ -19,27 +19,27 @@
             name: Extract and copy files
             command: |
                 mkdir rootfs
-                sudo tar xf *.tar.xz -C rootfs
-                sudo cp -f wsl.conf rootfs/etc
-                sudo cp -f resolv.conf rootfs/etc
-                sudo cp -f make.conf rootfs/etc/portage
-                sudo cp -f cpu.sh rootfs
+                tar xf *.tar.xz -C rootfs
+                cp -f wsl.conf rootfs/etc
+                cp -f resolv.conf rootfs/etc
+                cp -f make.conf rootfs/etc/portage
+                cp -f cpu.sh rootfs
         - run:
             name: Mount directories and chroot
             command: |
-                sudo mount -t proc proc proc/
-                sudo mount --bind /sys sys
-                sudo chroot . sh cpu.sh
-                sudo chroot . emerge-webrsync
+                mount -t proc proc proc/
+                mount --bind /sys sys
+                chroot . sh cpu.sh
+                chroot . emerge-webrsync
         - run:
             name: Install packages
             command: |
-                sudo chroot . emerge --oneshot -a n sys-devel/gcc
-                sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
-                sudo chroot . emerge --verbose --update --deep --newuse -a n @world
+                chroot . emerge --oneshot -a n sys-devel/gcc
+                chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
+                chroot . emerge --verbose --update --deep --newuse -a n @world
         - run:
             name: Unmount and compress archive
             command: |
-                sudo umount ./{sys,proc}
-                sudo tar -zcpf ../install.tar.gz *
-                sudo chown `id -un` ../install.tar.gz
+                umount ./{sys,proc}
+                tar -zcpf ../install.tar.gz *
+                chown `id -un` ../install.tar.gz
