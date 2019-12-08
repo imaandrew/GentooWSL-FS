@@ -9,7 +9,7 @@
             name: Installed prerequisite packages
             command: |
                 apt update -q
-                apt install -y -q curl
+                apt install -y -q curl wget
         - run:
             name: Setup environment and download files
             command: |
