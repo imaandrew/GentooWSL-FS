@@ -20,7 +20,7 @@
         - run:
             name: Extract and copy files
             command: |
-                tar -xvf $TAR
+                tar -xvJf *.tar.xz
                 cd ..
                 cp -f wsl.conf rootfs/etc
                 cp -f resolv.conf rootfs/etc
