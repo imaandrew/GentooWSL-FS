@@ -14,13 +14,14 @@
             name: Setup environment and download files
             command: |
                 source ./env.sh
+                mkdir rootfs
+                cd rootfs
                 wget ${GTOO_URL}
         - run:
             name: Extract and copy files
             command: |
-                mkdir rootfs
-                dir
-                tar -C rootfs -xvf $TAR
+                tar -xvf $TAR
+                cd ..
                 cp -f wsl.conf rootfs/etc
                 cp -f resolv.conf rootfs/etc
                 cp -f make.conf rootfs/etc/portage
