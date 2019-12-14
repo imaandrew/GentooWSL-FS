@@ -35,6 +35,7 @@
         - run:
             name: Unmount and compress archive
             command: |
+                cd rootfs
                 sudo umount ./{sys,proc}
                 sudo tar -zcpf ../install.tar.gz *
                 sudo chown `id -un` ../install.tar.gz
