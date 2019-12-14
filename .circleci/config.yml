@@ -32,10 +32,6 @@
                 sudo chroot . emerge --oneshot -a n sys-devel/gcc
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
-
-        - run:
-            name: Install packages
-            command: |
         - run:
             name: Unmount and compress archive
             command: |
