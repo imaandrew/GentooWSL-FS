@@ -28,8 +28,16 @@
                 sudo mount -t proc proc proc/
                 sudo mount --bind /sys sys
                 sudo chroot . sh cpu.sh
+                sudo chroot . mkdir --parents etc/portage/repos.conf
+                sudo chroot . cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gentoo.conf
                 sudo chroot . emerge-webrsync
                 sudo chroot . emerge --oneshot -a n sys-devel/gcc
+        - run:
+            name: More chroot stuff
+            command: |
+                cd rootfs 
+                sudo mount -t proc proc proc/
+                sudo mount --bind /sys sys
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
         - run:
