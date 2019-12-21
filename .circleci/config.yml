@@ -36,8 +36,21 @@
             name: More chroot stuff
             command: |
                 cd rootfs 
+                sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
+                sudo chroot . mirrorselect -s3 -o >> /etc/portage/repos.conf/gentoo.conf
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
+                sudo mkdir etc/portage/profile
+                sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
+                sudo echo 'ACCEPT_LICENSE="-* @FREE"' >> etc/portage/make.conf
+                sudo chroot . emerge -a n sys-kernel/gentoo-sources
+        - run:
+            name: Genkernel and friends
+            command: |
+                cd rootfs
+                sudo chroot . genkernel all
+                sudo chroot . emerge -a n sys-kernel/linux-firmware
+                sudo chroot . emerge -a n media-sound/pulseaudio::wsl
         - run:
             name: Unmount and compress archive
             command: |
@@ -45,3 +58,25 @@
                 sudo umount ./{sys,proc}
                 sudo tar -zcpf ../install.tar.gz *
                 sudo chown `id -un` ../install.tar.gz
+                sudo mkdir targz
+                sudo mv ../install.tar.gz targz
+                cd ..
+        - persist_to_workspace:
+            root: rootfs
+            paths:
+              - targz
+   publish-github-release:
+     docker:
+       - image: cibuilds/github:0.10
+     requires:
+       - build
+      steps:
+       - attach_workspace:
+           at: ./artifacts
+       - run:
+           name: "Publish Release on GitHub"
+           command: |
+             VERSION=$(my-binary --version)
+             ghr -t ${GIT_TOKEN} -u ThatWeirdAndrew -r GentooWSL-FS -delete ${VERSION} ./artifacts/
+
+       
