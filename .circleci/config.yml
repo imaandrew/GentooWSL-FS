@@ -70,7 +70,7 @@
        - image: cibuilds/github:0.10
      requires:
        - build
-      steps:
+     steps:
        - attach_workspace:
            at: ./artifacts
        - run:
