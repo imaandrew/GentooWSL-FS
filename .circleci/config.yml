@@ -37,18 +37,18 @@
             command: |
                 cd rootfs 
                 sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
-                sudo chmod a+rw etc/portage/repos.conf/gentoo.conf
                 sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
                 sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
-                sudo echo 'ACCEPT_LICENSE="-* @FREE"' >> etc/portage/make.conf
+                sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
                 sudo chroot . emerge -a n sys-kernel/gentoo-sources
         - run:
             name: Genkernel and friends
             command: |
                 cd rootfs
+                sudo chroot . emerge -a n sys-kernel/genkernel
                 sudo chroot . genkernel all
                 sudo chroot . emerge -a n sys-kernel/linux-firmware
                 sudo chroot . emerge -a n media-sound/pulseaudio::wsl
