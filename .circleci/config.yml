@@ -37,7 +37,8 @@
             command: |
                 cd rootfs 
                 sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
-                sudo chroot . mirrorselect -s3 -o >> /etc/portage/repos.conf/gentoo.conf
+                sudo chmod a+rw etc/portage/repos.conf/gentoo.conf
+                sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
