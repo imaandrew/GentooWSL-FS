@@ -1,7 +1,7 @@
 sudo apt update -q
 sudo apt install -y -q curl wget xz-utils sudo
 
-source ./env.sh
+sh env.sh
 mkdir rootfs
 wget ${GTOO_URL}
 sudo tar -xf ${TAR} -C rootfs
