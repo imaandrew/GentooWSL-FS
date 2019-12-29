@@ -11,6 +11,7 @@ sudo cp -f resolv.conf rootfs/etc
 sudo cp -f make.conf rootfs/etc/portage
 sudo cp -f cpu.sh rootfs
 
+cd rootfs
 sudo mount -t proc proc proc/
 sudo mount --bind /sys sys
 sudo chroot . sh cpu.sh
