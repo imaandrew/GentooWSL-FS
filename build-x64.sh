@@ -33,6 +33,21 @@ sudo chroot . emerge -a n sys-kernel/genkernel
 sudo chroot . genkernel all
 sudo chroot . emerge -a n sys-kernel/linux-firmware
 
+sudo chroot . emerge -a n app-admin/sudo
+sudo chmod -R a+rw etc
+sudo cp etc/sudoers ../sudoers
+sudo chmod a+rw ../sudoers
+sudo echo "%wheel ALL=(ALL) ALL" >> ../sudoers
+sudo visudo -cf ../sudoers
+sudo cp ../sudoers etc/sudoers
+sudo chroot . emerge -a n app-shells/bash-completion
+sudo chroot . echo 'en_US.UTF-8 UTF-8' >> etc/locale.gen
+sudo chroot . locale-gen
+sudo chmod -R a+rw etc
+sudo chroot . echo 'LANG="en_US.UTF-8"' >> etc/env.d/02locale
+sudo chroot . echo 'LC_COLLATE="C"' >> etc/env.d/02locale
+sudo cp -f ../resolv.conf etc/
+
 sudo umount ./{sys,proc}
 sudo tar -zcpf ../install.tar.gz *
 sudo chown `id -un` ../install.tar.gz
