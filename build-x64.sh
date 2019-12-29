@@ -1,6 +1,7 @@
 sudo apt update -q
 sudo apt install -y -q curl wget xz-utils sudo
 
+chmod +x env.sh
 . env.sh
 mkdir rootfs
 wget ${GTOO_URL}
