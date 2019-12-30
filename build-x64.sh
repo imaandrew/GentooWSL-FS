@@ -49,6 +49,8 @@ sudo chmod -R a+rw etc
 sudo chroot . echo 'LANG="en_US.UTF-8"' >> etc/env.d/02locale
 sudo chroot . echo 'LC_COLLATE="C"' >> etc/env.d/02locale
 sudo cp -f ../resolv.conf etc/
+sudo chmod 755 -R etc/sudoers
+sudo chmod 755 -R etc/sudoers.d
 
 sudo umount ./{sys,proc}
 sudo tar -zcpf ../install.tar.gz *
