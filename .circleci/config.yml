@@ -71,6 +71,8 @@
                 sudo chroot . echo 'LANG="en_US.UTF-8"' >> etc/env.d/02locale
                 sudo chroot . echo 'LC_COLLATE="C"' >> etc/env.d/02locale
                 sudo cp -f ../resolv.conf etc/
+                sudo chmod 755 -R etc/sudoers.d
+                sudo chmod 755 -R etc/sudoers
         - run:
             name: Unmount and compress archive
             command: |
