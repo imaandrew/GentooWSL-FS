@@ -50,6 +50,8 @@ sudo chroot . chmod 755 -R etc/sudoers.d
 sudo chroot . emerge -a n net-misc/netifrc
 sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
 sudo chroot . emerge -a n net-misc/dhcpcd
+sudo chroot . emerge -a n net-misc/iputils
+sudo rm var/cache/distfiles/*
 
 sudo umount ./{sys,proc}
 sudo tar -zcpf ../install.tar.gz *
