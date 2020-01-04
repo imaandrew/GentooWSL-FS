@@ -29,11 +29,6 @@ sudo mkdir etc/portage/profile
 sudo chmod -R a+rw etc
 sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
 sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
-sudo chroot . emerge -a n sys-kernel/gentoo-sources
-
-sudo chroot . emerge -a n sys-kernel/genkernel
-sudo chroot . genkernel all
-sudo chroot . emerge -a n sys-kernel/linux-firmware
 
 sudo chroot . emerge -a n app-admin/sudo
 sudo chmod -R a+rw etc
