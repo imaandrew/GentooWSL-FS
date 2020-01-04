@@ -45,14 +45,6 @@
                 sudo chmod -R a+rw etc
                 sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
                 sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
-                sudo chroot . emerge -a n sys-kernel/gentoo-sources
-        - run:
-            name: Genkernel and friends
-            command: |
-                cd rootfs
-                sudo chroot . emerge -a n sys-kernel/genkernel
-                sudo chroot . genkernel all
-                sudo chroot . emerge -a n sys-kernel/linux-firmware
         - run:
             name: Sudo n stuff
             command: |
@@ -79,7 +71,8 @@
                 sudo chroot . emerge -a n net-misc/netifrc
                 sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
                 sudo chroot . emerge -a n net-misc/dhcpcd
-                
+                sudo chroot . emerge -a n net-misc/iputils
+                sudo rm var/cache/distfiles/*
         - run:
             name: Unmount and compress archive
             command: |
@@ -105,7 +98,7 @@
        - run:
            name: "Publish Release on GitHub"
            command: |
-             VERSION=$(my-binary --version)
-             ghr -t ${GIT_TOKEN} -u ThatWeirdAndrew -r GentooWSL-FS -delete ${VERSION} ./artifacts/
+             VERSION=$(date +%y%m%d)
+             ghr -t ${GIT_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts/
 
        
