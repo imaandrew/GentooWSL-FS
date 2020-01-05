@@ -8,15 +8,15 @@
         - run:
             name: Installed prerequisite packages
             command: |
-                apt update -q
-                apt install -y -q curl wget xz-utils sudo pv
+                sudo apt update -q
+                sudo apt install -y -q curl wget xz-utils sudo pv
         - run:
             name: Setup environment and download files
             command: |
                 source ./env.sh
                 mkdir rootfs
                 wget ${GTOO_URL}
-                tar -xf ${TAR} -C rootfs
+                sudo tar -xf ${TAR} -C rootfs
                 sudo cp -f wsl.conf rootfs/etc
                 sudo cp -f resolv.conf rootfs/etc
                 sudo cp -f make.conf rootfs/etc/portage
