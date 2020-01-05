@@ -16,7 +16,7 @@
                 source ./env.sh
                 mkdir rootfs
                 wget ${GTOO_URL}
-                sudo tar -xf ${TAR} -C rootfs
+                tar -xf ${TAR} -C rootfs
                 sudo cp -f wsl.conf rootfs/etc
                 sudo cp -f resolv.conf rootfs/etc
                 sudo cp -f make.conf rootfs/etc/portage
