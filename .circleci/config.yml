@@ -33,7 +33,9 @@
                 sudo chroot . emerge-webrsync
         - run:
             name: GCC
-            command: sudo chroot . emerge -a n sys-devel/gcc
+            command: |
+                cd rootfs
+                sudo chroot . emerge -a n sys-devel/gcc
         - run:
             name: More chroot stuff
             command: |
