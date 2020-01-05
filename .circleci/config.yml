@@ -32,6 +32,9 @@
                 sudo chroot . cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gentoo.conf
                 sudo chroot . emerge-webrsync
         - run:
+            name: GCC
+            command: sudo chroot . emerge -a n sys-devel/gcc
+        - run:
             name: More chroot stuff
             command: |
                 cd rootfs 
