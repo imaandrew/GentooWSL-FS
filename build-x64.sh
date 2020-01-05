@@ -1,5 +1,5 @@
 sudo apt update -q
-sudo apt install -y -q curl wget xz-utils sudo
+sudo apt install -y -q curl wget xz-utils sudo pv
 
 chmod +x env.sh
 . env.sh
@@ -54,7 +54,7 @@ sudo chroot . emerge -a n net-misc/iputils
 sudo rm var/cache/distfiles/*
 
 sudo umount ./{sys,proc}
-sudo tar -zcpf ../install.tar.gz *
+sudo tar cf - * -P | pv -s $(sudo du -sb ./ | awk '{print $1}') | sudo gzip > ../install.tar.gz
 sudo chown `id -un` ../install.tar.gz
 sudo mkdir targz
 sudo mv ../install.tar.gz targz
