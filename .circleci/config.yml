@@ -25,8 +25,11 @@
             name: Mount directories and chroot
             command: |
                 cd rootfs
-                sudo mount -t proc proc proc/
+                sudo mount -t proc /proc proc
                 sudo mount --bind /sys sys
+                sudo mount --make-rslave sys
+                sudo mount --rbind /dev dev
+                sudo mount --make-rslave dev
                 sudo chroot . sh cpu.sh
                 sudo chroot . mkdir --parents etc/portage/repos.conf
                 sudo chroot . cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gentoo.conf
@@ -35,28 +38,36 @@
             name: GCC
             command: |
                 cd rootfs
+                sudo chroot . source /etc/profile
+                sudo chroot . env-update
                 sudo chroot . emerge -a n sys-devel/gcc
         - run:
             name: More chroot stuff
             command: |
-                cd rootfs 
+                cd rootfs
+                sudo chroot . source /etc/profile
+                sudo chroot . env-update
                 sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
                 sudo chmod -R a+rw etc
                 sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
+                sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
         - run:
             name: Update @world set
             command: |
                 cd rootfs
+                sudo chroot . source /etc/profile
+                sudo chroot . env-update
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
                 sudo chmod -R a+rw etc
                 sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
-                sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
         - run:
             name: Sudo n stuff
             command: |
                 cd rootfs
+                sudo chroot . source /etc/profile
+                sudo chroot . env-update
                 sudo chroot . emerge -a n app-admin/sudo
                 sudo chmod -R a+rw etc
                 sudo cp etc/sudoers ../sudoers
@@ -76,6 +87,8 @@
         - run:
             name: Networking things
             command: |
+                sudo chroot . source /etc/profile
+                sudo chroot . env-update
                 sudo chroot . emerge -a n net-misc/netifrc
                 sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
                 sudo chroot . emerge -a n net-misc/dhcpcd
