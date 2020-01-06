@@ -44,6 +44,10 @@
                 sudo chmod -R a+rw etc
                 sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
+        - run:
+            name: Update @world set
+            command:
+                cd rootfs
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
                 sudo chmod -R a+rw etc
