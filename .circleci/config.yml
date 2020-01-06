@@ -46,7 +46,7 @@
                 sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
         - run:
             name: Update @world set
-            command:
+            command: |
                 cd rootfs
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
