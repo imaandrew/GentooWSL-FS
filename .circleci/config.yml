@@ -39,7 +39,7 @@
             command: |
                 cd rootfs
                 sudo chroot . chmod u+x etc/profile
-                sudo chroot . . etc/profile
+                sudo chroot . ./etc/profile
                 sudo chroot . env-update
                 sudo chroot . emerge -a n sys-devel/gcc
         - run:
@@ -47,7 +47,7 @@
             command: |
                 cd rootfs
                 sudo chroot . chmod u+x etc/profile
-                sudo chroot . . etc/profile
+                sudo chroot . ./etc/profile
                 sudo chroot . env-update
                 sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
                 sudo chmod -R a+rw etc
@@ -59,7 +59,7 @@
             command: |
                 cd rootfs
                 sudo chroot . chmod u+x etc/profile
-                sudo chroot . . etc/profile
+                sudo chroot . ./etc/profile
                 sudo chroot . env-update
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
@@ -70,7 +70,7 @@
             command: |
                 cd rootfs
                 sudo chroot . chmod u+x etc/profile
-                sudo chroot . . etc/profile
+                sudo chroot . ./etc/profile
                 sudo chroot . env-update
                 sudo chroot . emerge -a n app-admin/sudo
                 sudo chmod -R a+rw etc
@@ -93,7 +93,7 @@
             command: |
                 cd rootfs
                 sudo chroot . chmod u+x etc/profile
-                sudo chroot . . etc/profile
+                sudo chroot . ./etc/profile
                 sudo chroot . env-update
                 sudo chroot . emerge -a n net-misc/netifrc
                 sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
