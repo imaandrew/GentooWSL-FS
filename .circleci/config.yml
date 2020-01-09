@@ -38,17 +38,12 @@
             name: GCC
             command: |
                 cd rootfs
-                sudo chroot . chmod u+x etc/profile
-                sudo chroot . ./etc/profile
                 sudo chroot . env-update
                 sudo chroot . emerge -a n sys-devel/gcc
         - run:
             name: More chroot stuff
             command: |
                 cd rootfs
-                sudo chroot . chmod u+x etc/profile
-                sudo chroot . ./etc/profile
-                sudo chroot . env-update
                 sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
                 sudo chmod -R a+rw etc
                 sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
@@ -58,9 +53,6 @@
             name: Update @world set
             command: |
                 cd rootfs
-                sudo chroot . chmod u+x etc/profile
-                sudo chroot . ./etc/profile
-                sudo chroot . env-update
                 sudo chroot . emerge --verbose --update --deep --newuse -a n @world
                 sudo mkdir etc/portage/profile
                 sudo chmod -R a+rw etc
@@ -69,9 +61,6 @@
             name: Sudo n stuff
             command: |
                 cd rootfs
-                sudo chroot . chmod u+x etc/profile
-                sudo chroot . ./etc/profile
-                sudo chroot . env-update
                 sudo chroot . emerge -a n app-admin/sudo
                 sudo chmod -R a+rw etc
                 sudo cp etc/sudoers ../sudoers
@@ -92,9 +81,6 @@
             name: Networking things
             command: |
                 cd rootfs
-                sudo chroot . chmod u+x etc/profile
-                sudo chroot . ./etc/profile
-                sudo chroot . env-update
                 sudo chroot . emerge -a n net-misc/netifrc
                 sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
                 sudo chroot . emerge -a n net-misc/dhcpcd
