@@ -37,7 +37,6 @@ jobs:
         sudo chroot . emerge-webrsync
     - name: GCC
       run: |
-        sudo chroot . env-update
         sudo chroot . emerge -a n sys-devel/gcc
     - name: More chroot stuff
       run: |
