@@ -45,7 +45,6 @@ jobs:
         cd rootfs
         sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
         sudo chmod -R a+rw etc
-        sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
         sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
         sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
     - name: Update @world set
