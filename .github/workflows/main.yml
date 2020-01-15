@@ -9,8 +9,81 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build script
-      run: sudo bash build-x64.sh
+    - name: Installed prerequisite packages
+      run: |
+        sudo apt update -q
+        sudo apt install -y -q curl wget xz-utils sudo pv
+    - name: Setup environment and download files
+      run: |
+        source ./env.sh
+        mkdir rootfs
+        wget ${GTOO_URL}
+        sudo tar -xf ${TAR} -C rootfs
+        sudo cp -f wsl.conf rootfs/etc
+        sudo cp -f resolv.conf rootfs/etc
+        sudo cp -f make.conf rootfs/etc/portage
+        sudo cp -f cpu.sh rootfs
+    - name: Mount directories and chroot
+      run: |
+        cd rootfs
+        sudo mount -t proc /proc proc
+        sudo mount --bind /sys sys
+        sudo mount --make-rslave sys
+        sudo mount --rbind /dev dev
+        sudo mount --rbind /dev dev
+        sudo chroot . sh cpu.sh
+        sudo chroot . mkdir --parents etc/portage/repos.conf
+        sudo chroot . cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gentoo.conf
+        sudo chroot . emerge-webrsync
+    - name: GCC
+      run: |
+        sudo chroot . env-update
+        sudo chroot . emerge -a n sys-devel/gcc
+    - name: More chroot stuff
+      run: |
+        sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
+        sudo chmod -R a+rw etc
+        sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
+        sudo echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' >> etc/portage/make.conf
+        sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
+    - name: Update @world set
+      run: |
+        sudo chroot . emerge --verbose --update --deep --newuse -a n @world
+        sudo mkdir etc/portage/profile
+        sudo chmod -R a+rw etc
+        sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
+    - name: Sudo n stuff
+      run: |
+        sudo chroot . emerge -a n app-admin/sudo
+        sudo chmod -R a+rw etc
+        sudo cp etc/sudoers ../sudoers
+        sudo chmod a+rw ../sudoers
+        sudo echo "%wheel ALL=(ALL) ALL" >> ../sudoers
+        sudo visudo -cf ../sudoers
+        sudo cp ../sudoers etc/sudoers
+        sudo chroot . emerge -a n app-shells/bash-completion
+        sudo chroot . echo 'en_US.UTF-8 UTF-8' >> etc/locale.gen
+        sudo chroot . locale-gen
+        sudo chmod -R a+rw etc
+        sudo chroot . echo 'LANG="en_US.UTF-8"' >> etc/env.d/02locale
+        sudo chroot . echo 'LC_COLLATE="C"' >> etc/env.d/02locale
+        sudo cp -f ../resolv.conf etc/
+        sudo chroot . chmod 755 -R etc/sudoers
+        sudo chroot . chmod 755 -R etc/sudoers.d
+    - name: Network things
+      run: |
+        sudo chroot . emerge -a n net-misc/netifrc
+        sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
+        sudo chroot . emerge -a n net-misc/dhcpcd
+        sudo chroot . emerge -a n net-misc/iputils
+        sudo rm var/cache/distfiles/*
+    - name: Unmount and compress archive
+      run: |
+        sudo umount ./{sys,proc}
+        sudo tar -zcpf ../install.tar.gz *
+        sudo chown `id -un` ../install.tar.gz
+        sudo mkdir targz
+        sudo mv ../install.tar.gz targz
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
