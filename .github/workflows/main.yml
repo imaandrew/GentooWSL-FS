@@ -89,10 +89,10 @@ jobs:
         sudo chown `id -un` ../install.tar.gz
         sudo mkdir targz
         sudo mv ../install.tar.gz targz
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+    - name: Publish release
+      run: export RELEASENAME=$(date +%y%m%d)
+      uses: ncipollo/release-action@v1
       with:
-        # Artifact name
-        name: install.tar.gz
-        # Directory containing files to upload
-        path: rootfs/targz
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifact: rootfs/targz/install.tar.gz
+        tag: $RELEASENAME
