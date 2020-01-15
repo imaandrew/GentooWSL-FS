@@ -37,9 +37,12 @@ jobs:
         sudo chroot . emerge-webrsync
     - name: GCC
       run: |
+        cd rootfs
+        sudo chroot . env-update
         sudo chroot . emerge -a n sys-devel/gcc
     - name: More chroot stuff
       run: |
+        cd rootfs
         sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
         sudo chmod -R a+rw etc
         sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
@@ -47,12 +50,14 @@ jobs:
         sudo chroot . emerge --oneshot --usepkg=n -a n sys-devel/libtool
     - name: Update @world set
       run: |
+        cd rootfs
         sudo chroot . emerge --verbose --update --deep --newuse -a n @world
         sudo mkdir etc/portage/profile
         sudo chmod -R a+rw etc
         sudo echo "sys-apps/portage -ipc" > etc/portage/profile/package.use.force
     - name: Sudo n stuff
       run: |
+        cd rootfs
         sudo chroot . emerge -a n app-admin/sudo
         sudo chmod -R a+rw etc
         sudo cp etc/sudoers ../sudoers
@@ -71,6 +76,7 @@ jobs:
         sudo chroot . chmod 755 -R etc/sudoers.d
     - name: Network things
       run: |
+        cd rootfs
         sudo chroot . emerge -a n net-misc/netifrc
         sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
         sudo chroot . emerge -a n net-misc/dhcpcd
@@ -78,6 +84,7 @@ jobs:
         sudo rm var/cache/distfiles/*
     - name: Unmount and compress archive
       run: |
+        cd rootfs
         sudo umount ./{sys,proc}
         sudo tar -zcpf ../install.tar.gz *
         sudo chown `id -un` ../install.tar.gz
