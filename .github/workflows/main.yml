@@ -93,6 +93,7 @@ jobs:
     - name: Publish release
       uses: ncipollo/release-action@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         artifact: rootfs/targz/install.tar.gz
         tag: ${RELEASENAME}
+        commit: master
+        token: ${{ secrets.GITHUB_TOKEN }}
