@@ -89,9 +89,8 @@ jobs:
         sudo chown `id -un` ../install.tar.gz
         sudo mkdir targz
         sudo mv ../install.tar.gz targz
+        echo ::set-env name=RELEASENAME::$(date +%y%m%d)
     - name: Publish release
-      env: 
-        RELEASENAME: $(date +%y%m%d)
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
