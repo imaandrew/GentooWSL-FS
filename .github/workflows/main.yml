@@ -90,12 +90,12 @@ jobs:
         sudo mkdir targz
         sudo mv ../install.tar.gz targz
     - name: Set variable
-      run: echo ::set-env name=releasename::$(date +%y%m%d)
+      run: echo ::set-env name=version::$(date +%y%m%d)
       id: release
     - name: Publish release
-      uses: ncipollo/release-action@v1
+      uses: softprops/action-gh-release@v1
       with:
-        artifact: rootfs/targz/install.tar.gz
-        tag: ${{ steps.release.outputs.releasename }}
-        commit: master
-        token: ${{ secrets.GITHUB_TOKEN }}
+        files: rootfs/targz/install.tar.gz
+        tag_name: ${{ steps.release.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
