@@ -96,6 +96,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifact: rootfs/targz/install.tar.gz
-        tag: ${{ steps.release.outputs.release }}
+        tag: ${{ steps.release.outputs.releasename }}
         commit: master
         token: ${{ secrets.GITHUB_TOKEN }}
