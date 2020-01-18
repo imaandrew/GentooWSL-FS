@@ -90,12 +90,12 @@ jobs:
         sudo mkdir targz
         sudo mv ../install.tar.gz targz
     - name: Set variable
-      run: echo ::set-env name=version::$(date +%y%m%d)
-      id: release
+      run: echo "::set-env name=version::$(date +%y%m%d)"
+      shell: bash
     - name: Publish release
       uses: softprops/action-gh-release@v1
       with:
         files: rootfs/targz/install.tar.gz
-        tag_name: ${{ steps.release.outputs.version }}
+        tag_name: "${{env.version}}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
