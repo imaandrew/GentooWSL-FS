@@ -93,9 +93,9 @@ jobs:
       run: echo "::set-env name=version::$(date +%y%m%d)"
       shell: bash
     - name: Publish release
-      uses: softprops/action-gh-release@v1
+      uses: ncipollo/release-action@v1
       with:
-        files: rootfs/targz/install.tar.gz
-        tag_name: "${{env.version}}"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: "rootfs/targz/install.tar.gz"
+        tag: "${{env.version}}"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit: master
