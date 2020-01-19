@@ -14,7 +14,7 @@ jobs:
     - name: Installed prerequisite packages
       run: |
         sudo apt update -q
-        sudo apt install -y -q curl wget xz-utils sudo pv du
+        sudo apt install -y -q curl wget xz-utils sudo pv coreutils
     - name: Setup environment and download files
       run: |
         source ./env.sh
