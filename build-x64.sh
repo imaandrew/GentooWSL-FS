@@ -20,6 +20,7 @@ sudo chroot . cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gent
 sudo chroot . emerge-webrsync
 sudo chroot . emerge --oneshot -a n sys-devel/gcc
 
+sudo chroot . emerge --update --deep --with-bdeps=y --newuse @world
 sudo chroot . emerge --oneshot -a n app-portage/mirrorselect
 sudo chmod -R a+rw etc
 sudo chroot . mirrorselect -s3 -o >> etc/portage/repos.conf/gentoo.conf
