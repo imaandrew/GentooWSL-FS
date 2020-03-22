@@ -87,6 +87,8 @@ jobs:
         sudo chroot . emerge -a n net-misc/dhcpcd
         sudo chroot . emerge -a n net-misc/iputils
         sudo rm var/cache/distfiles/*
+        sudo chroot . chmod -R +x /usr
+        sudo chmod -R +x usr
     - name: Unmount and compress archive
       run: |
         cd rootfs
