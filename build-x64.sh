@@ -47,6 +47,11 @@ sudo chroot . echo 'LC_COLLATE="C"' >> etc/env.d/02locale
 sudo cp -f ../resolv.conf etc/
 sudo chroot . chmod 755 -R etc/sudoers
 sudo chroot . chmod 755 -R etc/sudoers.d
+sudo chroot . emerge -a n app-portage/layman
+sudo chroot . sed -i '/^#/!s/check_official .*/check_official : No/' /etc/layman/layman.cfg
+sudo chroot . layman -o https://raw.githubusercontent.com/ThatWeirdAndrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
+sudo chroot . layman-updater -R 
+sudo chroot . emerge -a n sys-apps/wslu
 
 sudo chroot . emerge -a n net-misc/netifrc
 sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net

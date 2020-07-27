@@ -79,6 +79,11 @@ jobs:
         sudo cp -f ../resolv.conf etc/
         sudo chroot . chmod 755 -R etc/sudoers
         sudo chroot . chmod 755 -R etc/sudoers.d
+        sudo chroot . emerge -a n app-portage/layman
+        sudo chroot . sed -i '/^#/!s/check_official .*/check_official : No/' /etc/layman/layman.cfg
+        sudo chroot . layman -o https://raw.githubusercontent.com/ThatWeirdAndrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
+        sudo chroot . layman-updater -R 
+        sudo chroot . emerge -a n sys-apps/wslu
     - name: Network things
       run: |
         cd rootfs
@@ -86,7 +91,7 @@ jobs:
         sudo chroot . echo 'config_eth0="dhcp"' >> etc/conf.d/net
         sudo chroot . emerge -a n net-misc/dhcpcd
         sudo chroot . emerge -a n net-misc/iputils
-        sudo rm var/cache/distfiles/*
+        sudo rm -rf var/cache/distfiles/*
         sudo chroot . chmod -R +x /usr
         sudo chmod -R +x usr
     - name: Unmount and compress archive
@@ -101,6 +106,7 @@ jobs:
       run: echo "::set-env name=version::$(date +%y%m%d)"
       shell: bash
     - name: Publish release
+      if: github.event == 'schedule'
       uses: ncipollo/release-action@v1
       with:
         artifacts: "rootfs/targz/install.tar.gz"
