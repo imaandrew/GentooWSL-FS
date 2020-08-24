@@ -5,7 +5,7 @@ on:
     - cron: '10 14 * * 0'
   push:
     branches: 
-      - dev
+      - master
 
 jobs:
   build:
