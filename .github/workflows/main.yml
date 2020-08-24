@@ -67,7 +67,8 @@ jobs:
         sudo chmod -R a+rw etc
         sudo cp etc/sudoers ../sudoers
         sudo chmod a+rw ../sudoers
-        sudo echo "%wheel ALL=(ALL) ALL" >> ../sudoers
+        sudo sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' ../sudoers
+        cat ../sudoers
         sudo visudo -cf ../sudoers
         sudo cp ../sudoers etc/sudoers
         sudo chroot . emerge -a n app-shells/bash-completion
