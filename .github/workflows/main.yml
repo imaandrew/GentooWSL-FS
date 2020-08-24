@@ -68,7 +68,8 @@ jobs:
         sudo cp etc/sudoers ../sudoers
         sudo chmod a+rw ../sudoers
         sudo sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' ../sudoers
-        cat ../sudoers
+        sudo sed -e 's=@includedir /etc/sudoers.d=#includedir /etc/sudoers.d=g' ../sudoers
+        sudo visudo -cf ../sudoers
         sudo cp ../sudoers etc/sudoers
         sudo chroot . emerge -a n app-shells/bash-completion
         sudo chroot . echo 'en_US.UTF-8 UTF-8' >> etc/locale.gen
