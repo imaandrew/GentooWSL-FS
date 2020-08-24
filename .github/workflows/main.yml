@@ -69,7 +69,6 @@ jobs:
         sudo chmod a+rw ../sudoers
         sudo sed -i -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' ../sudoers
         cat ../sudoers
-        sudo visudo -cf ../sudoers
         sudo cp ../sudoers etc/sudoers
         sudo chroot . emerge -a n app-shells/bash-completion
         sudo chroot . echo 'en_US.UTF-8 UTF-8' >> etc/locale.gen
@@ -85,6 +84,11 @@ jobs:
         sudo chroot . layman -o https://raw.githubusercontent.com/ThatWeirdAndrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
         sudo chroot . layman-updater -R 
         sudo chroot . emerge -a n sys-apps/wslu
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.1.4
+      with:
+        name: Sudoers
+        path: sudoers
     - name: Network things
       run: |
         cd rootfs
