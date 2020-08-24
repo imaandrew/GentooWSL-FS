@@ -107,7 +107,7 @@ jobs:
       run: echo "::set-env name=version::$(date +%y%m%d)"
       shell: bash
     - name: Publish release
-      if: github.event == 'schedule'
+      if: ${{ github.event_name == 'schedule' }}
       uses: ncipollo/release-action@v1
       with:
         artifacts: "rootfs/targz/install.tar.gz"
