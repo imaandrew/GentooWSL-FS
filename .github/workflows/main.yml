@@ -104,7 +104,7 @@ jobs:
         sudo mkdir targz
         sudo mv ../install.tar.gz targz
     - name: Set variable
-      run: echo "::set-env name=version::$(date +%y%m%d)"
+      run: echo "version=$(date +%y%m%d)" >> $GITHUB_ENV
       shell: bash
     - name: Publish release
       if: ${{ github.event_name == 'schedule' }}
