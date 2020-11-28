@@ -25,7 +25,7 @@ jobs:
       run: |
         source ./env.sh
         mkdir rootfs
-        wget ${GTOO_URL}
+        wget -q ${GTOO_URL}
         sudo tar -xpf ${TAR} -C rootfs --xattrs-include='*.*' --numeric-owner
         cd rootfs
         sudo cp -f ../wsl.conf ./etc
@@ -39,10 +39,6 @@ jobs:
         sudo mount --make-rslave ./sys
         sudo mount --rbind /dev ./dev
         sudo mount --make-rslave ./dev
-        sudo rm -rf /dev/shm
-        sudo mkdir /dev/shm
-        sudo mount --types tmpfs --options nosuid,nodev,noexec shm /dev/shm
-        sudo chmod 1777 /dev/shm
         sudo mount --rbind /dev/shm/ ./dev/shm
         sudo chmod 1777 ./dev/shm/
         sudo chroot . sh cpu.sh
