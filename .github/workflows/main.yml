@@ -66,12 +66,14 @@ jobs:
         sudo sed -ie "s/\(.*passwdqc.*\)/#\1/" ./etc/pam.d/system-auth
     - name: Locale stuff
       run: |
+        cd rootfs
         echo 'en_US.UTF-8 UTF-8' | sudo tee -a ./etc/locale.gen
         sudo chroot . locale-gen
         sudo sed -i -e 's/C.UTF8/"en_US.UTF-8"/' ./etc/env.d/02locale
         echo 'LC_COLLATE="C"' | sudo tee -a ./etc/env.d/02locale
     - name: Setup custom gentoo overlay
       run: |
+        cd rootfs
         sudo chroot . emerge -a n app-portage/layman
         sudo sed -i '/^#/!s/check_official .*/check_official : No/' ./etc/layman/layman.cfg
         sudo chroot . layman -o https://raw.githubusercontent.com/ThatWeirdAndrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
