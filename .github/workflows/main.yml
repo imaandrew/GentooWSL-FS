@@ -74,6 +74,7 @@ jobs:
         sudo sed -i -e 's/C.UTF8/"en_US.UTF-8"/' ./etc/env.d/02locale
         echo 'LC_COLLATE="C"' | sudo tee -a ./etc/env.d/02locale
     - name: Setup custom gentoo overlay
+      run: |
         sudo chroot . emerge -a n app-portage/layman
         sudo sed -i '/^#/!s/check_official .*/check_official : No/' ./etc/layman/layman.cfg
         sudo chroot . layman -o https://raw.githubusercontent.com/ThatWeirdAndrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
