@@ -30,6 +30,7 @@ jobs:
         cd rootfs
         sudo cp -f ../wsl.conf ./etc
         sudo cp -f ../make.conf ./etc/portage
+        sudo cp -f /etc/resolv.conf ./etc
         sudo cp -f ../cpu.sh ./
     - name: Mount directories and setup chroot
       run: |
