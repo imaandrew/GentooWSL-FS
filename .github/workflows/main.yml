@@ -89,7 +89,7 @@ jobs:
       run: |
         cd rootfs
         sudo rm -rf ./var/cache/distfiles/*
-        sudo umount -Rq ./{sys,proc,dev}
+        sudo umount -R ./{sys,proc,dev}
         sudo tar -zcpf ../rootfs.tar.gz *
         sudo chown $(id -un) ../rootfs.tar.gz
         mkdir ../out
