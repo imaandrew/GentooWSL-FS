@@ -30,7 +30,7 @@ sudo chroot . emerge-webrsync
 sudo chroot . emerge --update --deep --with-bdeps=y --newuse @world
 sudo chroot . emerge -a n app-portage/mirrorselect
 echo 'ACCEPT_LICENSE="-* @FREE linux-fw-redistributable no-source-code"' | sudo tee -a ./etc/portage/make.conf
-sudo chroot . mirrorselect -s3
+sudo chroot . mirrorselect -s3 -b10 -D
 
 # Sudo n stuff
 sudo chroot . emerge -a n app-admin/sudo app-shells/bash-completion
