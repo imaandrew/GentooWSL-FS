@@ -47,7 +47,7 @@ echo 'LC_COLLATE="C"' | sudo tee -a ./etc/env.d/02locale
 # Setup custom gentoo overlay
 sudo chroot . emerge -a n app-portage/layman
 sudo sed -i '/^#/!s/check_official .*/check_official : No/' ./etc/layman/layman.cfg
-sudo chroot . layman -o https://raw.githubusercontent.com/ThatWeirdAndrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
+sudo chroot . layman -o https://raw.githubusercontent.com/imaandrew/gentoowsl-overlay/master/repositories.xml -f -a gentoowsl
 sudo chroot . layman-updater -R
 sudo chroot . emerge -a n sys-apps/wslu sys-process/cronie
 sudo chroot . rc-update add cronie default
