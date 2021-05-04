@@ -1,4 +1,4 @@
-# GentooWSL-FS ![CI](https://github.com/ThatWeirdAndrew/GentooWSL-FS/workflows/CI/badge.svg)
+# GentooWSL-FS ![CI](https://github.com/imaandrew/GentooWSL-FS/workflows/CI/badge.svg)
 Filesystem for GentooWSL
 
 ## Building
