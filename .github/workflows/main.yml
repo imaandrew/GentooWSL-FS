@@ -103,5 +103,5 @@ jobs:
       with:
         artifacts: "out/rootfs.tar.gz"
         tag: "${{env.version}}"
-        token: ${{ secrets.TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         commit: master
